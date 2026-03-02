@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = 'scientific-calculator'
-        GITHUB_REPO_URL = 'https://github.com/Mohit1-cmd/SPE_Calculator_Java_New'
+        GITHUB_REPO_URL = 'https://github.com/Mohit1-cmd/SPE_Calculator_Java.git'
         DOCKER_HUB_USERNAME = 'mohit67'
     }
 
