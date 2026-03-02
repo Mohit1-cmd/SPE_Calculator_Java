@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     environment {
         DOCKER_IMAGE_NAME = 'scientific-calculator'
         GITHUB_REPO_URL = 'https://github.com/Mohit1-cmd/SPE_Calculator_Java_New.git'
@@ -7,13 +8,25 @@ pipeline {
     }
 
     stages {
-        stage('Clone Git') {
+
+        // ---- FIX 1: clean old repo ----
+        stage('Clean Workspace') {
             steps {
-                script {
-                    git branch: 'main',
-                        credentialsId: 'github_credentials',
-                        url: "${GITHUB_REPO_URL}"
-                }
+                cleanWs()
+            }
+        }
+
+        // ---- FIX 2: proper checkout ----
+        stage('Checkout Source Code') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: "${GITHUB_REPO_URL}",
+                        credentialsId: 'github_credentials'
+                    ]]
+                ])
             }
         }
 
@@ -56,12 +69,10 @@ pipeline {
 
         stage('Deploy with Ansible') {
             steps {
-                script {
-                    ansiblePlaybook(
-                        playbook: 'deploy.yml',
-                        inventory: 'inventory'
-                    )
-                }
+                ansiblePlaybook(
+                    playbook: 'deploy.yml',
+                    inventory: 'inventory'
+                )
             }
         }
     }
