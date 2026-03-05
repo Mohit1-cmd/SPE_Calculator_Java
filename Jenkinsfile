@@ -9,14 +9,12 @@ pipeline {
 
     stages {
 
-        // ---- FIX 1: clean old repo ----
         stage('Clean Workspace') {
             steps {
                 cleanWs()
             }
         }
 
-        // ---- FIX 2: proper checkout ----
         stage('Checkout Source Code') {
             steps {
                 checkout([
@@ -51,7 +49,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE_NAME}", '.')
+                    docker.build("${DOCKER_IMAGE_NAME}")
                 }
             }
         }
@@ -59,9 +57,13 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('', 'docker-hub-credential') {
-                        sh "docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
-                        sh "docker push ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credential') {
+
+                        sh """
+                        docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
+                        docker push ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
+                        """
+
                     }
                 }
             }
@@ -75,5 +77,6 @@ pipeline {
                 )
             }
         }
+
     }
 }
