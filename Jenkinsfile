@@ -56,15 +56,16 @@ pipeline {
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credential') {
-
-                        sh """
-                        docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
-                        docker push ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
-                        """
-
-                    }
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub-credential',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh """
+                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                    docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
+                    docker push ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
+                    """
                 }
             }
         }
