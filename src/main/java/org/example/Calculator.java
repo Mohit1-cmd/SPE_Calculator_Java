@@ -73,6 +73,7 @@ public class Calculator {
         System.out.println("  4. Division        8. Factorial");
         System.out.println("  9. Exit");
         System.out.print("  Choice: ");
+        System.out.flush();
     }
 
     private static double readTwoNumbers(Scanner sc, String prompt) {
@@ -84,6 +85,8 @@ public class Calculator {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        System.out.println("\nStarting Scientific Calculator...");
+        System.out.flush();
 
         while (true) {
             printMenu();
