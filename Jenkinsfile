@@ -96,7 +96,7 @@ Build URL: ${env.BUILD_URL}
 Docker Image: ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
 Deployment completed using Ansible.
 """,
-                to: "your_email@gmail.com"
+                to: "aezakmi7974@gmail.com"
             )
         }
 
@@ -112,7 +112,7 @@ Build Number: ${env.BUILD_NUMBER}
 Check logs here:
 ${env.BUILD_URL}
 """,
-                to: "your_email@gmail.com"
+                to: "aezakmi7974@gmail.com"
             )
         }
 
