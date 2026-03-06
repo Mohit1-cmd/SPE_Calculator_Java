@@ -80,4 +80,41 @@ pipeline {
         }
 
     }
+
+    post {
+
+        success {
+            emailext(
+                subject: "SUCCESS: Jenkins Build - ${env.JOB_NAME}",
+                body: """
+Build completed successfully.
+
+Project: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+Build URL: ${env.BUILD_URL}
+
+Docker Image: ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
+Deployment completed using Ansible.
+""",
+                to: "your_email@gmail.com"
+            )
+        }
+
+        failure {
+            emailext(
+                subject: "FAILED: Jenkins Build - ${env.JOB_NAME}",
+                body: """
+Build failed.
+
+Project: ${env.JOB_NAME}
+Build Number: ${env.BUILD_NUMBER}
+
+Check logs here:
+${env.BUILD_URL}
+""",
+                to: "your_email@gmail.com"
+            )
+        }
+
+    }
 }
