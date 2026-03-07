@@ -84,7 +84,7 @@ pipeline {
     post {
 
         success {
-            mail to: 'utkspare@gmail.com',
+            mail to: 'aezakmi7974@gmail.com',
                  subject: "Jenkins SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                  body: """
 Build completed successfully.
@@ -98,7 +98,7 @@ ${env.BUILD_URL}
         }
 
         failure {
-            mail to: 'utkspare@gmail.com',
+            mail to: 'aezakmi7974@gmail.com',
                  subject: "Jenkins FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                  body: """
 Build failed.
